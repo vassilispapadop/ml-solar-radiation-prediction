@@ -1,12 +1,17 @@
 # Install dependencies
+
+```python
 pip install numpy
 pip install pandas
 pip install sklearn
 pip install matplotlib
 pip install seaborn
+```
 
 # Launch jupyter
+```python
 jupyter notebook nasa_solar_radiation_prediction.ipynb
+```
 
 # Dataset
 
