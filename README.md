@@ -33,6 +33,22 @@ Features: Radiation, Temperature, Humidity, Pressure, Wind Direction, Wind Speed
 # Feature Engineering
 
 ## method-1, rel_time
+```python
+def relativeTimeFeature(self):
+    print('Creating feature:', self.featureCase)
+    #Converting sunrise and sunset times into timestamp
+    self.df['sunrise_timestamp'] = self.df.apply(lambda row: datetime.timestamp(row['sunrise_time']), axis = 1)
+    self.df['sunset_timestamp'] = self.df.apply(lambda row: datetime.timestamp(row['sunset_time']), axis = 1)
+
+    #Creating a column containing the number of daily light hours
+    self.df['Daylight_duration'] = (self.df['sunset_timestamp'] - self.df['sunrise_timestamp'])/60/60
+
+    #Creating column describing current time relative to sunrise/sunset
+    self.df['Rel_time'] = (self.df['UNIXTime']- self.df['sunrise_timestamp'])/(self.df['sunset_timestamp']-self.df['sunrise_timestamp'])
+
+    #Removing unnecessary features/columns
+    self.dropColumns(['UNIXTime','sunrise_timestamp', 'sunset_timestamp', 'sunset_time', 'sunrise_time'])
+```
 | Date | Radiation | Temperature | Pressure | Humidity | WindDirection(Degrees) | Speed | Daylight_duration | Rel_time |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |							
 |2016-09-29 23:55:26-10:00|	1.21|	48|	30.46|	59|	177.39|	5.62|	12.0|	1.475602|
@@ -43,6 +59,19 @@ Features: Radiation, Temperature, Humidity, Pressure, Wind Direction, Wind Speed
 
 
 ## method-2, sun_is_up
+```python
+def daylight(self, current_time, rising_time, set_time):
+    return (rising_time < current_time) and (current_time < set_time)
+
+def sunIsUp(self):
+    print('Creating feature', self.featureCase)
+    sun_is_up = [self.daylight(self.df.index[index], self.df["sunrise_time"][index], self.df["sunset_time"][index]) for index in range(self.df.shape[0])]
+    sun_is_up = np.array(sun_is_up, dtype = int)
+    self.df["sun_is_up"] = sun_is_up
+    
+    proportion = round(sum(self.df["sun_is_up"]/self.df.shape[0]*100), 2)
+    print("Proportion of record with the sun up : {0}%".format(proportion))
+```
 | Date | Radiation | Temperature | Pressure | Humidity | WindDirection(Degrees) | Speed | sun_is_up |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |						
 |2016-09-29 18:10:52-10:00|	6.63|	53|	30.44|	59|	118.82|	5.62|	1|
