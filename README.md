@@ -56,17 +56,19 @@ Features: Radiation, Temperature, Humidity, Pressure, Wind Direction, Wind Speed
 
 ## Multivariate Linear Regression
 ## Random Forest
+```python
+tree_based_estimators = [100, 300, 500, 800]
+min_samples_leaf: [0.075, 0.05, 0.025]
+max_depth': [5, 6, 7]
+```
 ## Gradient Boosting
-
-
+```python
+tree_based_estimators = [100, 300, 500, 800]
+min_samples_leaf: [0.075, 0.05, 0.025]
+max_depth': [5, 6, 7]
+```
 # Results
 ## Best best model
 Grandient Boost with 'rel_time' feature extraction
 train r^2 = 0.92
 test r^2 = 0.91
-
-
-# test
-| Attempt | #1 | #2 | #3 | #4 | #5 | #6 | #7 | #8 | #9 | #10 | #11 | #12 |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| Seconds | 301 | 283 | 290 | 286 | 289 | 285 | 287 | 287 | 272 | 276 | 269 | 254 |
